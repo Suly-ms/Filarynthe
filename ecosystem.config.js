@@ -1,7 +1,7 @@
 module.exports = {
     apps: [
         {
-            name: "3d-vault-backend",
+            name: "filarynthe-backend",
             script: "server.js",
             cwd: "./backend",
             instances: 1,
@@ -14,7 +14,7 @@ module.exports = {
             }
         },
         {
-            name: "3d-vault-frontend",
+            name: "filarynthe-frontend",
             script: "npm",
             args: "run preview -- --port 15372 --host", // Using preview for production-like serve
             cwd: "./frontend",

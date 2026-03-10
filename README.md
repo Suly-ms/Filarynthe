@@ -1,10 +1,10 @@
-# 3D-Vault
+# Filarynthe
 
 Un système complet de gestion et prévisualisation de fichiers 3D (.stl, .obj, .3mf) en réseau local, avec un système d'authentification robuste.
 
 ## Déploiement avec PM2
 
-PM2 est un gestionnaire de processus pour les applications Node.js, idéal pour maintenir 3D-Vault en ligne en permanence sur un serveur (ex: un Raspberry Pi, un VPS, etc.).
+PM2 est un gestionnaire de processus pour les applications Node.js, idéal pour maintenir Filarynthe en ligne en permanence sur un serveur (ex: un Raspberry Pi, un VPS, etc.).
 
 ### Prérequis
 

@@ -71,7 +71,7 @@ function Dashboard() {
                         <Layers className="w-10 h-10 text-white" />
                     </div>
                     <h1 className="text-5xl font-extrabold tracking-tight">
-                        3D<span className="text-[var(--color-primary)]">-Vault</span>
+                        Fila<span className="text-[var(--color-primary)]">rynthe</span>
                     </h1>
                 </div>
                 <p className="text-gray-400 font-medium tracking-wide">
@@ -100,7 +100,7 @@ function Dashboard() {
 
             <footer className="mt-16 text-center text-sm text-gray-500 pb-4 flex items-center justify-center space-x-2">
                 <Layers className="w-4 h-4 opacity-50" />
-                <span>3D-Vault &copy; {new Date().getFullYear()} - Hébergé localement</span>
+                <span>Filarynthe &copy; {new Date().getFullYear()} - Hébergé localement</span>
             </footer>
 
             {selectedFile && (

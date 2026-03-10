@@ -31,7 +31,7 @@ export default function Login() {
                         <Layers className="w-10 h-10 text-white" />
                     </div>
                     <h1 className="text-4xl font-extrabold tracking-tight">
-                        3D<span className="text-[var(--color-primary)]">-Vault</span>
+                        Fila<span className="text-[var(--color-primary)]">rynthe</span>
                     </h1>
                 </div>
                 <p className="text-gray-400 font-medium tracking-wide mt-2">Connectez-vous à votre coffre-fort</p>
