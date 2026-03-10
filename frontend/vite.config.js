@@ -8,5 +8,10 @@ export default defineConfig({
   server: {
     port: 15372,
     strictPort: true,
+  },
+  preview: {
+    port: 15372,
+    strictPort: true,
+    allowedHosts: true, // Allows all hosts (e.g. duckdns.org)
   }
 })
