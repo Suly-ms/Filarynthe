@@ -48,7 +48,7 @@ const ModelParams = ({ url, extension }) => {
 const Viewer3D = ({ file, onClose }) => {
     if (!file) return null;
 
-    const url = `http://localhost:3001/uploads/${file.filename}`;
+    const url = `http://localhost:14285/uploads/${file.filename}`;
     const ext = file.extension;
 
     return (

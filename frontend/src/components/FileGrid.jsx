@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Download, Trash2, Eye, Box } from 'lucide-react';
+import { AuthContext } from '../context/AuthContext';
 
 const FileGrid = ({ files, onView, onDelete }) => {
+    const { token } = useContext(AuthContext);
     const formatSize = (bytes) => {
         if (bytes === 0) return '0 B';
         const k = 1024;
@@ -17,8 +19,28 @@ const FileGrid = ({ files, onView, onDelete }) => {
         });
     };
 
-    const handleDownload = (file) => {
-        window.open(`http://localhost:3001/api/files/download/${file.id}`, '_blank');
+    const handleDownload = async (file) => {
+        try {
+            const response = await fetch(`http://localhost:14285/api/files/download/${file.id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (!response.ok) throw new Error("Erreur de téléchargement");
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = file.originalName;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } catch (err) {
+            console.error(err);
+            alert("Erreur lors du téléchargement");
+        }
     };
 
     if (files.length === 0) {

@@ -5,6 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 const db = require('../database');
+const { authMiddleware } = require('../middleware/authMiddleware');
 
 // Allowed extensions
 const ALLOWED_EXTS = ['.stl', '.obj', '.3mf'];
@@ -36,7 +37,7 @@ const upload = multer({
 });
 
 // POST /api/files/upload
-router.post('/upload', (req, res) => {
+router.post('/upload', authMiddleware, (req, res) => {
     upload.single('file')(req, res, function (err) {
         if (err instanceof multer.MulterError) {
             return res.status(400).json({ error: err.message });
@@ -52,11 +53,12 @@ router.post('/upload', (req, res) => {
         const id = path.basename(filename, path.extname(filename));
         const ext = path.extname(originalname).toLowerCase();
         const uploadDate = new Date().toISOString();
+        const userId = req.user.id;
 
-        const sql = `INSERT INTO files (id, filename, originalName, size, uploadDate, mimetype, extension) 
-                     VALUES (?, ?, ?, ?, ?, ?, ?)`;
+        const sql = `INSERT INTO files (id, filename, originalName, size, uploadDate, mimetype, extension, userId) 
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 
-        db.run(sql, [id, filename, originalname, size, uploadDate, mimetype, ext], function (dbErr) {
+        db.run(sql, [id, filename, originalname, size, uploadDate, mimetype, ext, userId], function (dbErr) {
             if (dbErr) {
                 console.error(dbErr);
                 fs.unlink(path.join(__dirname, '../uploads', filename), () => { });
@@ -73,8 +75,9 @@ router.post('/upload', (req, res) => {
 });
 
 // GET /api/files
-router.get('/', (req, res) => {
-    db.all(`SELECT * FROM files ORDER BY uploadDate DESC`, [], (err, rows) => {
+router.get('/', authMiddleware, (req, res) => {
+    const userId = req.user.id;
+    db.all(`SELECT * FROM files WHERE userId = ? ORDER BY uploadDate DESC`, [userId], (err, rows) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Erreur lors de la récupération des fichiers.' });
@@ -84,11 +87,12 @@ router.get('/', (req, res) => {
 });
 
 // GET /api/files/download/:id
-router.get('/download/:id', (req, res) => {
+router.get('/download/:id', authMiddleware, (req, res) => {
     const id = req.params.id;
-    db.get(`SELECT * FROM files WHERE id = ?`, [id], (err, row) => {
+    const userId = req.user.id;
+    db.get(`SELECT * FROM files WHERE id = ? AND userId = ?`, [id, userId], (err, row) => {
         if (err || !row) {
-            return res.status(404).json({ error: 'Fichier non trouvé.' });
+            return res.status(404).json({ error: 'Fichier non trouvé ou non autorisé.' });
         }
         const filePath = path.join(__dirname, '../uploads', row.filename);
         res.download(filePath, row.originalName);
@@ -96,11 +100,12 @@ router.get('/download/:id', (req, res) => {
 });
 
 // DELETE /api/files/:id
-router.delete('/:id', (req, res) => {
+router.delete('/:id', authMiddleware, (req, res) => {
     const id = req.params.id;
-    db.get(`SELECT filename FROM files WHERE id = ?`, [id], (err, row) => {
+    const userId = req.user.id;
+    db.get(`SELECT filename FROM files WHERE id = ? AND userId = ?`, [id, userId], (err, row) => {
         if (err || !row) {
-            return res.status(404).json({ error: 'Fichier non trouvé.' });
+            return res.status(404).json({ error: 'Fichier non trouvé ou non autorisé.' });
         }
 
         // Delete from DB
