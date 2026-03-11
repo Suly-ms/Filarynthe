@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { Layers } from 'lucide-react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:14285/api';
+
 export default function Register() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -15,7 +17,7 @@ export default function Register() {
         setError('');
         setSuccess('');
         try {
-            await axios.post('http://localhost:14285/api/auth/register', { username, password });
+            await axios.post(`${API_URL}/auth/register`, { username, password });
             setSuccess('Inscription réussie ! Redirection en cours...');
             setTimeout(() => {
                 navigate('/login');

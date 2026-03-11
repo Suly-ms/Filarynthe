@@ -7,6 +7,8 @@ import Viewer3D from '../components/Viewer3D';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:14285/api';
+
 function Dashboard() {
     const [files, setFiles] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
@@ -20,7 +22,7 @@ function Dashboard() {
 
     const fetchFiles = async () => {
         try {
-            const res = await axios.get('http://localhost:14285/api/files', {
+            const res = await axios.get(`${API_URL}/files`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setFiles(res.data);
@@ -45,7 +47,7 @@ function Dashboard() {
     const handleDelete = async (id) => {
         try {
             if (!window.confirm("Voulez-vous vraiment supprimer ce fichier ?")) return;
-            await axios.delete(`http://localhost:14285/api/files/${id}`, {
+            await axios.delete(`${API_URL}/files/${id}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setFiles(files.filter(f => f.id !== id));

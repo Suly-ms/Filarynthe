@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import { Download, Trash2, Eye, Box } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:14285/api';
+
 const FileGrid = ({ files, onView, onDelete }) => {
     const { token } = useContext(AuthContext);
     const formatSize = (bytes) => {
@@ -21,7 +23,7 @@ const FileGrid = ({ files, onView, onDelete }) => {
 
     const handleDownload = async (file) => {
         try {
-            const response = await fetch(`http://localhost:14285/api/files/download/${file.id}`, {
+            const response = await fetch(`${API_URL}/files/download/${file.id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

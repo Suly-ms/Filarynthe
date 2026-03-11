@@ -4,6 +4,8 @@ import { AuthContext } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { Layers } from 'lucide-react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:14285/api';
+
 export default function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -15,7 +17,7 @@ export default function Login() {
         e.preventDefault();
         setError('');
         try {
-            const res = await axios.post('http://localhost:14285/api/auth/login', { username, password });
+            const res = await axios.post(`${API_URL}/auth/login`, { username, password });
             loginAction(res.data.user, res.data.token);
             navigate('/');
         } catch (err) {

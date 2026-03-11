@@ -3,6 +3,8 @@ import { useDropzone } from 'react-dropzone';
 import { UploadCloud } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:14285/api';
+
 const UploadZone = ({ onUploadSuccess }) => {
     const { token } = useContext(AuthContext);
     const [uploading, setUploading] = useState(false);
@@ -23,7 +25,7 @@ const UploadZone = ({ onUploadSuccess }) => {
         formData.append('file', acceptedFiles[0]);
 
         try {
-            const response = await fetch('http://localhost:14285/api/files/upload', {
+            const response = await fetch(`${API_URL}/files/upload`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`
