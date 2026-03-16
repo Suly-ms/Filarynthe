@@ -14,7 +14,7 @@ app.use(helmet()); // Basic security headers
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" })); // Allow 3D files to be fetched cross-origin
 
 const allowedOrigins = [
-    'http://localhost:15372',
+    'https://filarynthe.duckdns.org',
     process.env.FRONTEND_URL
 ].filter(Boolean);
 
