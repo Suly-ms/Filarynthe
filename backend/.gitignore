@@ -11,3 +11,5 @@ metadata.db
 # uploads
 uploads/
 /uploads
+
+/generated/prisma
