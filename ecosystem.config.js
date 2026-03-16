@@ -9,8 +9,7 @@ module.exports = {
             watch: false,
             max_memory_restart: "1G",
             env: {
-                NODE_ENV: "production",
-                // PORT: 14285 // Already defined in server.js but can be overridden here
+                NODE_ENV: "production"
             }
         },
         {
